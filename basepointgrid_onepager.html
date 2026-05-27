@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasepointGrid — EV Charging Partnership</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #1D9E75; --teal-pale: #EAF7F2;
+    --dark: #0A0E17; --charcoal: #2A3347; --mid: #6B7A94;
+    --light: #F4F6F9; --white: #FFFFFF; --rule: #E2E8F0;
+  }
+  @page { size: letter; margin: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--dark); padding: 24px; }
+  .page { max-width: 760px; margin: 0 auto; background: var(--white); border: 0.5px solid var(--rule); box-shadow: 0 4px 40px rgba(0,0,0,0.06); }
+
+  .header { background: var(--dark); padding: 26px 40px 22px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(29,158,117,0.18) 1px, transparent 1px); background-size: 28px 28px; opacity: 0.3; pointer-events: none; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; margin-bottom: 14px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-wordmark { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 600; color: white; letter-spacing: -0.3px; }
+  .logo-wordmark span { color: var(--teal); }
+  .header-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .header h1 { font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 6px; position: relative; z-index: 1; }
+  .header h1 em { font-style: normal; color: var(--teal); }
+  .header-sub { font-size: 11.5px; color: rgba(255,255,255,0.4); font-weight: 300; letter-spacing: 0.04em; position: relative; z-index: 1; }
+
+  .prop-bar { background: var(--teal-pale); border-top: 2px solid var(--teal); padding: 9px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  .prop-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--charcoal); }
+  .prop-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+  .body { padding: 24px 40px; }
+  .section { margin-bottom: 20px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 600; color: var(--dark); margin-bottom: 10px; padding-bottom: 7px; border-bottom: 0.5px solid var(--rule); display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ''; width: 3px; height: 13px; background: var(--teal); border-radius: 2px; flex-shrink: 0; }
+
+  .intro-text { font-size: 12px; line-height: 1.75; color: var(--mid); }
+  .intro-text strong { color: var(--dark); }
+
+  .two-col-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+  .reason { margin-bottom: 11px; }
+  .reason-header { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 3px; }
+  .reason-num { width: 17px; height: 17px; border-radius: 50%; background: var(--dark); color: var(--white); font-size: 9px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .reason-title { font-size: 11.5px; font-weight: 500; color: var(--dark); }
+  .reason-body { font-size: 10.5px; color: var(--mid); line-height: 1.65; padding-left: 24px; }
+  .reason-body strong { color: var(--charcoal); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; border: 0.5px solid var(--rule); border-radius: 4px; overflow: hidden; }
+  .col-head { background: var(--dark); color: var(--white); font-size: 9.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 13px; }
+  .col-head.right { background: var(--teal); color: var(--dark); }
+  .col-body { padding: 0; }
+  .col-item { display: flex; align-items: flex-start; gap: 7px; padding: 7px 13px; border-bottom: 0.5px solid var(--rule); font-size: 10.5px; color: var(--charcoal); line-height: 1.4; }
+  .col-item:last-child { border-bottom: none; }
+  .col-item::before { content: '✓'; color: var(--teal); font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+  .col-item.right::before { content: '—'; color: var(--mid); }
+  .col-item.muted { font-style: italic; color: var(--mid); }
+
+  .founding-badge { background: var(--teal-pale); border: 1px solid rgba(29,158,117,0.28); border-radius: 5px; padding: 10px 14px; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+  .founding-star { color: var(--teal); font-size: 16px; flex-shrink: 0; line-height: 1.1; }
+  .founding-title { font-family: 'Syne', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+  .founding-desc { font-size: 10.5px; color: var(--mid); line-height: 1.6; }
+  .founding-desc strong { color: var(--charcoal); }
+
+  .revenue-box { background: var(--dark); border-radius: 4px; overflow: hidden; }
+  .revenue-head { background: var(--teal); padding: 7px 14px; font-size: 9.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); }
+  .revenue-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .revenue-item { padding: 13px 14px; border-right: 0.5px solid rgba(255,255,255,0.07); }
+  .revenue-item:last-child { border-right: none; }
+  .revenue-label { font-size: 8.5px; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px; }
+  .revenue-value { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--teal); line-height: 1; margin-bottom: 4px; }
+  .revenue-note { font-size: 8.5px; color: rgba(255,255,255,0.3); line-height: 1.4; }
+
+  .bottom-row { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; margin-top: 18px; padding-top: 18px; border-top: 0.5px solid var(--rule); }
+  .next-step-title { font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 600; color: var(--dark); margin-bottom: 6px; }
+  .next-step-body { font-size: 10.5px; color: var(--mid); line-height: 1.65; margin-bottom: 10px; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .contact-item { display: flex; flex-direction: column; gap: 2px; }
+  .contact-label { font-size: 8.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); }
+  .contact-value { font-size: 11px; color: var(--dark); font-weight: 500; }
+
+  .qr-block { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .qr-block img { width: 88px; height: 88px; display: block; }
+  .qr-label { font-size: 8.5px; color: var(--mid); text-align: center; line-height: 1.5; }
+
+  .footer { background: var(--dark); padding: 9px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-brand { font-family: 'Syne', sans-serif; font-size: 11px; color: rgba(255,255,255,0.45); }
+  .footer-brand span { color: var(--teal); }
+  .footer-note { font-size: 9.5px; color: rgba(255,255,255,0.25); }
+
+  @media print {
+    body { padding: 0; background: white; }
+    .page { box-shadow: none; border: none; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <svg width="26" height="26" viewBox="0 0 72 72">
+          <circle cx="12" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="36" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="60" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="12" cy="36" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
+          <circle cx="60" cy="36" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="12" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="36" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="60" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
+        </svg>
+        <div class="logo-wordmark">Basepoint<span>Grid</span></div>
+      </div>
+      <div class="header-eyebrow">East Bay · Multifamily EV Infrastructure</div>
+    </div>
+    <h1>We Install EV Chargers at Your Building —<br><em>You Pay Nothing. You Get Paid Every Month.</em></h1>
+    <div class="header-sub">No money down &nbsp;·&nbsp; No maintenance &nbsp;·&nbsp; No staff needed &nbsp;·&nbsp; Monthly payment direct to your bank</div>
+  </div>
+
+  <div class="prop-bar">
+    <div class="prop-item"><span class="prop-dot"></span> You pay nothing — ever</div>
+    <div class="prop-item"><span class="prop-dot"></span> Monthly payment to your bank</div>
+    <div class="prop-item"><span class="prop-dot"></span> No maintenance or staff needed</div>
+    <div class="prop-item"><span class="prop-dot"></span> $1.5M insurance — your property is covered</div>
+  </div>
+
+  <div class="body">
+
+    <div class="section">
+      <div class="section-title">Here's How It Works</div>
+      <p class="intro-text"><strong>We install EV chargers at your property. You pay nothing.</strong> We own the equipment, handle all repairs, and collect payments from residents automatically. Every month, <strong>we send you a check</strong>. No staff. No calls. No hassle.</p>
+    </div>
+
+    <div class="two-col-layout">
+
+      <div>
+        <div class="section-title">Why This Matters Now</div>
+
+        <div class="reason">
+          <div class="reason-header">
+            <div class="reason-num">1</div>
+            <div class="reason-title">Your residents already need this</div>
+          </div>
+          <div class="reason-body">
+            <strong>1 in 4 new cars your residents buy this year is electric.</strong> Right now they're driving miles to public chargers because your building doesn't have one.
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-header">
+            <div class="reason-num">2</div>
+            <div class="reason-title">Your competition is catching up</div>
+          </div>
+          <div class="reason-body">
+            New apartment buildings in the East Bay now offer EV charging as a standard feature. Without it, you risk losing good tenants to buildings that have it.
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-header">
+            <div class="reason-num">3</div>
+            <div class="reason-title">It may protect you legally</div>
+          </div>
+          <div class="reason-body">
+            California law requires you to approve tenants who want to install their own chargers — which means random electrical work and lost power capacity. Properties with shared EV charging <strong>may be exempt from individual tenant charger requests under California Civil Code §1947.6.</strong> <em>Ask your property attorney if this applies to you.</em>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title">What We Do vs. What You Do</div>
+        <div class="two-col">
+          <div class="col-head">BasepointGrid does</div>
+          <div class="col-head right">You do</div>
+          <div class="col-body">
+            <div class="col-item">Pay for all equipment and installation — 100%</div>
+            <div class="col-item">Handle all city permits and PG&amp;E paperwork</div>
+            <div class="col-item">Install ChargePoint Level 2 chargers (2 plug-ins each)</div>
+            <div class="col-item">Collect all payments from residents automatically</div>
+            <div class="col-item">Carry $1.5M in liability insurance — your property is covered too</div>
+            <div class="col-item">Handle all repairs and resident support, 24/7</div>
+          </div>
+          <div class="col-body">
+            <div class="col-item right">Sign a simple 5-year agreement</div>
+            <div class="col-item right">Set aside 4–6 parking spots for chargers</div>
+            <div class="col-item right">Tell your residents the chargers are there</div>
+            <div class="col-item right">Get your monthly payment deposited to your bank</div>
+            <div class="col-item right muted">Nothing else — ever</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section">
+      <div class="section-title">What Your Property Earns</div>
+      <div class="founding-badge">
+        <div class="founding-star">★</div>
+        <div>
+          <div class="founding-title">Founding Partner Rate — Only 5 Slots Available</div>
+          <div class="founding-desc">As a Founding Partner, you earn <strong>20% of all charging revenue</strong> — every month, for as long as we're partners. This deal is only open to the first 5 properties. Once those slots are filled, it's gone.</div>
+        </div>
+      </div>
+      <div class="revenue-box">
+        <div class="revenue-head">Estimated Revenue — 4-Charger Deployment (8 Ports)</div>
+        <div class="revenue-grid">
+          <div class="revenue-item">
+            <div class="revenue-label">Monthly to your property</div>
+            <div class="revenue-value">$350–$600</div>
+            <div class="revenue-note">Based on typical charger usage</div>
+          </div>
+          <div class="revenue-item">
+            <div class="revenue-label">Per year — no work required</div>
+            <div class="revenue-value">$4,200–$7,200</div>
+            <div class="revenue-note">You put in nothing to earn this</div>
+          </div>
+          <div class="revenue-item">
+            <div class="revenue-label">What residents pay</div>
+            <div class="revenue-value">$0.38–$0.42<span style="font-size:11px;">/kWh</span></div>
+            <div class="revenue-note">Lower rates during off-peak hours</div>
+          </div>
+          <div class="revenue-item">
+            <div class="revenue-label">Your cost</div>
+            <div class="revenue-value">$0</div>
+            <div class="revenue-note">We pay for everything</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-row">
+      <div>
+        <div class="next-step-title">Next Step: Free 15-Minute Property Review</div>
+        <div class="next-step-body">We'll review your parking layout and electrical panel to verify site compatibility, map out the optimal installation path, and handle your PG&E grid capacity application on your behalf — 100% hassle-free.</div>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <div class="contact-label">Contact</div>
+            <div class="contact-value">Devang Jadav, Principal</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">925-452-7558</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Email</div>
+            <div class="contact-value">devang@basepointgrid.com</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Web</div>
+            <div class="contact-value">basepointgrid.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="qr-block">
+        <div id="qrcode" style="width:88px;height:88px;"></div>
+        <div class="qr-label">Scan to book your<br>free property review</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">Basepoint<span>Grid</span> &nbsp;·&nbsp; A Plumeria Lux LLC company</div>
+    <div class="footer-note">© 2026 &nbsp;·&nbsp; East Bay, California</div>
+  </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://basepointgrid.com/schedule",
+    width: 88,
+    height: 88,
+    colorDark: "#0A0E17",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+</script>
+</body>
+</html>
