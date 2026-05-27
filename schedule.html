@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Free Property Review — BasepointGrid</title>
+  <meta name="description" content="Schedule a free 15-minute property review with BasepointGrid. We'll tell you on the spot if your property qualifies for fully funded EV charging.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #0A0E17;
+      --surface:   #141922;
+      --surface-2: #1C2535;
+      --border:    #252F42;
+      --teal:      #1D9E75;
+      --teal-hi:   #24BE8B;
+      --teal-dim:  rgba(29,158,117,0.10);
+      --text:      #E4EDF8;
+      --muted:     #6F83A3;
+      --dim:       #3A4A63;
+      --error:     #E05C5C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(29,158,117,0.18) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(10,14,23,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+
+    .logo-wordmark {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: var(--text);
+    }
+
+    .logo-wordmark span { color: var(--teal); }
+
+    .nav-back {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+
+    .nav-back:hover { color: var(--teal); }
+
+    /* ── Main wrapper ── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 96px 1.5rem 3rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    }
+
+    /* ── Card header ── */
+    .card-header {
+      background: var(--navy);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(29,158,117,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-dim);
+      border: 1px solid rgba(29,158,117,0.25);
+      color: var(--teal-hi);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+
+    .card-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-header h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+
+    .card-header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── What to expect pills ── */
+    .expect {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+
+    .expect-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .expect-item svg { flex-shrink: 0; }
+
+    /* ── Form body ── */
+    .card-body { padding: 1.75rem 2rem 2rem; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    input, select, textarea {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--dim); }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(29,158,117,0.1);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236F83A3' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    select option { background: var(--surface-2); color: var(--text); }
+
+    textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 14px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.1px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.12s;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover { background: var(--teal-hi); transform: translateY(-1px); }
+    .submit-btn:active { transform: translateY(0); }
+
+    .submit-btn.loading { opacity: 0.7; pointer-events: none; }
+
+    .disclaimer {
+      font-size: 11px;
+      color: var(--dim);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ── Success state ── */
+    .success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .success-icon {
+      width: 64px; height: 64px;
+      background: var(--teal-dim);
+      border: 2px solid var(--teal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .success h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .success p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 360px;
+    }
+
+    .success-contact {
+      margin-top: 1.5rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .success-contact strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 1rem 2rem;
+      font-size: 12px;
+      color: var(--dim);
+    }
+
+    @media (max-width: 540px) {
+      .form-row { grid-template-columns: 1fr; }
+      .card-header { padding: 1.5rem 1.25rem; }
+      .card-body { padding: 1.5rem 1.25rem; }
+      .success { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo" aria-label="BasepointGrid home">
+    <svg width="22" height="22" viewBox="0 0 72 72" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="36" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="60" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="12" cy="36" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
+      <circle cx="60" cy="36" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="12" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="36" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="60" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
+    </svg>
+    <span class="logo-wordmark">Basepoint<span>Grid</span></span>
+  </a>
+  <a href="/" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to site
+  </a>
+</nav>
+
+<div class="wrap">
+  <div class="card">
+
+    <div class="card-header">
+      <div class="badge"><span class="badge-dot"></span>Free · No obligation</div>
+      <h1>Book Your Free<br><em>15-Minute Property Review</em></h1>
+      <p>We'll look at your parking layout and electrical setup and tell you on the spot if your property qualifies for fully funded EV charging.</p>
+      <div class="expect">
+        <div class="expect-item">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1D9E75" stroke-width="1.5"/><path d="M10 6v4l2.5 2.5" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/></svg>
+          15 minutes
+        </div>
+        <div class="expect-item">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M3 10l4 4 10-8" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          No cost ever
+        </div>
+        <div class="expect-item">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M3 10l4 4 10-8" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Clear answer on the spot
+        </div>
+        <div class="expect-item">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M3 10l4 4 10-8" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reply within 24 hours
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="card-body" id="formWrap">
+      <form id="scheduleForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+        <input type="hidden" name="access_key" value="42ef2a17-f60d-4995-a7da-5d4cd3ffc559">
+        <input type="hidden" name="subject" value="New Property Review Request — BasepointGrid">
+        <input type="hidden" name="from_name" value="BasepointGrid Schedule Form">
+        <input type="hidden" name="redirect" value="false">
+
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Your name *</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="phone">Phone number *</label>
+            <input type="tel" id="phone" name="phone" placeholder="(510) 555-0100" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address *</label>
+          <input type="email" id="email" name="email" placeholder="jane@example.com" required autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="address">Property address *</label>
+          <input type="text" id="address" name="property_address" placeholder="1234 Main St, Hayward, CA 94541" required>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="units">Number of units *</label>
+            <select id="units" name="unit_count" required>
+              <option value="" disabled selected>Select range</option>
+              <option value="under-50">Under 50</option>
+              <option value="50-100">50 – 100</option>
+              <option value="100-250">100 – 250</option>
+              <option value="250+">250+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="time">Best time to reach you</label>
+            <select id="time" name="best_time">
+              <option value="" disabled selected>Select time</option>
+              <option value="morning">Morning (8am – 12pm)</option>
+              <option value="afternoon">Afternoon (12pm – 5pm)</option>
+              <option value="evening">Evening (5pm – 7pm)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Anything else we should know? <span style="font-weight:300;opacity:0.7;">(optional)</span></label>
+          <textarea id="message" name="message" placeholder="e.g. surface lot in back, about 40 spaces..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 7v11h5v-4h4v4h5V7L10 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Request My Free Review
+        </button>
+        <p class="disclaimer">We respond within 24 hours. No spam. No sales pressure.</p>
+
+      </form>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="success" id="successState">
+      <div class="success-icon">
+        <svg width="28" height="28" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>You're all set!</h2>
+      <p>Thanks for reaching out. Devang will review your property details and get back to you within 24 hours to set up your free review.</p>
+      <div class="success-contact">
+        <strong>Questions in the meantime?</strong>
+        Call or text 925-452-7558 &nbsp;·&nbsp; devang@basepointgrid.com
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 BasepointGrid &nbsp;·&nbsp; A Plumeria Lux LLC company</p>
+</footer>
+
+<script>
+  const form = document.getElementById('scheduleForm');
+  const btn = document.getElementById('submitBtn');
+  const formWrap = document.getElementById('formWrap');
+  const success = document.getElementById('successState');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.textContent = 'Sending...';
+    btn.classList.add('loading');
+
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        formWrap.style.display = 'none';
+        success.style.display = 'flex';
+      } else {
+        btn.textContent = 'Something went wrong — try again';
+        btn.classList.remove('loading');
+      }
+    } catch {
+      btn.textContent = 'Something went wrong — try again';
+      btn.classList.remove('loading');
+    }
+  });
+</script>
+
+</body>
+</html>
