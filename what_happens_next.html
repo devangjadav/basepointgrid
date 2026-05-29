@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BasepointGrid — What Happens Next</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0A0E17;
+    --surface: #141922;
+    --border:  #252F42;
+    --teal:    #1D9E75;
+    --teal-hi: #24BE8B;
+    --text:    #E4EDF8;
+    --muted:   rgba(255,255,255,0.45);
+    --dim:     rgba(255,255,255,0.18);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #E0E0E0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .print-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    text-align: center;
+  }
+
+  /* CARD — 4" x 6" portrait postcard */
+  .card {
+    width: 4in;
+    height: 6in;
+    background: var(--navy);
+    border-radius: 0.1in;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.28);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* dot grid texture */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(29,158,117,0.16) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  /* teal glow top-right */
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(29,158,117,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: 0.18in 0.24in 0.15in;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+
+  .logo-wordmark span { color: var(--teal); }
+
+  .header-badge {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(29,158,117,0.1);
+    border: 1px solid rgba(29,158,117,0.25);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  /* ── TITLE BLOCK ── */
+  .title-block {
+    position: relative;
+    z-index: 1;
+    padding: 0.14in 0.24in 0.12in;
+  }
+
+  .title-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+
+  .title-main {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+  }
+
+  .title-main em {
+    font-style: normal;
+    color: var(--teal);
+  }
+
+  .title-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* ── STEPS ── */
+  .steps {
+    position: relative;
+    z-index: 1;
+    padding: 0.12in 0.24in 0.1in;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 0.14in;
+  }
+
+  .step:last-child { padding-bottom: 0; }
+
+  /* vertical connector line */
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: 0;
+    width: 1.5px;
+    background: linear-gradient(to bottom, rgba(29,158,117,0.4), rgba(29,158,117,0.08));
+  }
+
+  /* number circle */
+  .step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-num.done {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+  }
+
+  .step-content {
+    padding-top: 3px;
+    flex: 1;
+  }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.2px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .step-tag {
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(29,158,117,0.1);
+    border: 1px solid rgba(29,158,117,0.2);
+    padding: 2px 7px;
+    border-radius: 100px;
+  }
+
+  .step-body {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-size: 10.5px;
+  }
+
+  .step-body strong { color: rgba(255,255,255,0.7); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: relative;
+    z-index: 1;
+    padding: 0.12in 0.24in;
+    border-top: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 2px; }
+
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .footer-contact {
+    font-size: 9.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .footer-contact span { color: var(--teal); }
+
+  .footer-qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .footer-qr-box {
+    background: white;
+    border-radius: 4px;
+    padding: 3px;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-qr-box canvas, .footer-qr-box img {
+    display: block;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .footer-qr-label {
+    font-size: 7px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  @media print {
+    body { background: white; padding: 0.25in; }
+    .card { box-shadow: none; border: 0.5px solid #ddd; }
+    .print-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-label">What Happens Next — 4" × 6" Card</div>
+
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <svg width="20" height="20" viewBox="0 0 72 72">
+        <circle cx="12" cy="12" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="36" cy="12" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="60" cy="12" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="12" cy="36" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
+        <circle cx="60" cy="36" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="12" cy="60" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="36" cy="60" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="60" cy="60" r="4.5" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+      <div class="logo-wordmark">Basepoint<span>Grid</span></div>
+    </div>
+    <div class="header-badge">Zero cost to you</div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="title-block">
+    <div class="title-eyebrow">Your roadmap</div>
+    <div class="title-main">What Happens<br><em>Next.</em></div>
+    <div class="title-sub">From first conversation to monthly income — here's exactly what to expect.</div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">
+          Schedule a site walkthrough
+          <span class="step-tag">15 min</span>
+        </div>
+        <div class="step-body">We visit your property, walk the parking lot, and review your electrical panel. <strong>No cost, no obligation.</strong></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">We design your installation</div>
+        <div class="step-body">We map the optimal charger placement, confirm PG&amp;E grid capacity, and prepare your site plan — all on us.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Sign a simple 5-year agreement</div>
+        <div class="step-body">One document. You designate the parking spots. We handle every permit, every inspector, every approval.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">
+          Go live — start earning
+          <span class="step-tag">Founding Partner</span>
+        </div>
+        <div class="step-body">Chargers are installed and live on the ChargePoint network. <strong>You receive 20% of all charging revenue</strong> deposited to your bank every month.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <div class="footer-name">Devang Jadav, Principal</div>
+      <div class="footer-contact">
+        <span>925-452-7558</span> &nbsp;·&nbsp; devang@basepointgrid.com<br>
+        basepointgrid.com
+      </div>
+    </div>
+    <div class="footer-qr">
+      <div class="footer-qr-box" id="card-qr"></div>
+      <div class="footer-qr-label">Book your<br>free review</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  new QRCode(document.getElementById("card-qr"), {
+    text: "https://basepointgrid.com/schedule",
+    width: 40,
+    height: 40,
+    colorDark: "#0A0E17",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+</script>
+
+</body>
+</html>
