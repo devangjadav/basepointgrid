@@ -50,17 +50,17 @@
 
   /* ── FRONT ── */
   .front {
-    background: var(--navy);
+    background: #FFFFFF;
   }
 
-  /* dot grid bg */
+  /* subtle dot grid bg */
   .front::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(29,158,117,0.22) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(29,158,117,0.15) 1px, transparent 1px);
     background-size: 18px 18px;
-    opacity: 0.3;
+    opacity: 0.5;
   }
 
   /* teal accent bar - left edge */
@@ -82,7 +82,6 @@
     justify-content: space-between;
   }
 
-  /* Logo row */
   .logo-row {
     display: flex;
     align-items: center;
@@ -93,20 +92,19 @@
     font-family: 'Syne', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    color: white;
+    color: var(--navy);
     letter-spacing: -0.2px;
   }
 
   .logo-wordmark span { color: var(--teal); }
 
-  /* Name block */
   .name-block { }
 
   .name {
     font-family: 'Syne', sans-serif;
     font-size: 14.5px;
     font-weight: 700;
-    color: white;
+    color: var(--navy);
     letter-spacing: -0.3px;
     line-height: 1;
     margin-bottom: 3px;
@@ -139,12 +137,12 @@
     align-items: center;
     gap: 6px;
     font-size: 9px;
-    color: var(--muted);
+    color: #4A5568;
     line-height: 1;
   }
 
   .contact-item svg { flex-shrink: 0; }
-  .contact-item span { color: rgba(255,255,255,0.75); }
+  .contact-item span { color: var(--navy); }
 
   .front-qr {
     display: flex;
@@ -154,7 +152,8 @@
   }
 
   .front-qr-box {
-    background: white;
+    background: #EAF7F2;
+    border: 1px solid rgba(29,158,117,0.3);
     border-radius: 4px;
     padding: 3px;
     width: 48px;
@@ -286,15 +285,15 @@
       <!-- Logo -->
       <div class="logo-row">
         <svg width="18" height="18" viewBox="0 0 72 72">
-          <circle cx="12" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="36" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="60" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="12" cy="36" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="12" cy="12" r="4.5" fill="rgba(29,158,117,0.3)"/>
+          <circle cx="36" cy="12" r="4.5" fill="rgba(29,158,117,0.3)"/>
+          <circle cx="60" cy="12" r="4.5" fill="rgba(29,158,117,0.3)"/>
+          <circle cx="12" cy="36" r="4.5" fill="rgba(29,158,117,0.3)"/>
           <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
-          <circle cx="60" cy="36" r="4.5" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="12" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="36" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
-          <circle cx="60" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
+          <circle cx="60" cy="36" r="4.5" fill="rgba(29,158,117,0.3)"/>
+          <circle cx="12" cy="60" r="4.5" fill="rgba(29,158,117,0.3)"/>
+          <circle cx="36" cy="60" r="4.5" fill="rgba(29,158,117,0.3)"/>
+          <circle cx="60" cy="60" r="4.5" fill="rgba(29,158,117,0.3)"/>
         </svg>
         <div class="logo-wordmark">Basepoint<span>Grid</span></div>
       </div>

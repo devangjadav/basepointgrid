@@ -13,22 +13,23 @@
 
     :root {
       --navy:      #0A0E17;
-      --surface:   #141922;
-      --surface-2: #1C2535;
-      --border:    #252F42;
+      --surface:   #FFFFFF;
+      --surface-2: #F4F6F9;
+      --border:    #E2E8F0;
       --teal:      #1D9E75;
       --teal-hi:   #24BE8B;
-      --teal-dim:  rgba(29,158,117,0.10);
-      --text:      #E4EDF8;
-      --muted:     #6F83A3;
-      --dim:       #3A4A63;
+      --teal-dim:  rgba(29,158,117,0.08);
+      --teal-pale: #EAF7F2;
+      --text:      #0A0E17;
+      --muted:     #4A5568;
+      --dim:       #718096;
       --error:     #E05C5C;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--navy);
+      background: #F8FAFC;
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
       font-size: 16px;
@@ -37,14 +38,13 @@
       min-height: 100vh;
     }
 
-    /* dot grid background */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(29,158,117,0.18) 1px, transparent 1px);
+      background-image: radial-gradient(circle, rgba(29,158,117,0.15) 1px, transparent 1px);
       background-size: 36px 36px;
-      opacity: 0.18;
+      opacity: 0.10;
       pointer-events: none;
       z-index: 0;
     }
@@ -59,9 +59,9 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 2rem;
-      background: rgba(10,14,23,0.88);
+      background: rgba(10,14,23,0.92);
       backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #252F42;
     }
 
     .logo {
@@ -76,14 +76,16 @@
       font-size: 16px;
       font-weight: 600;
       letter-spacing: -0.2px;
-      color: var(--text);
+      color: #E4EDF8;
     }
+
+    nav .logo-wordmark { color: #E4EDF8; }
 
     .logo-wordmark span { color: var(--teal); }
 
     .nav-back {
       font-size: 13px;
-      color: var(--muted);
+      color: rgba(255,255,255,0.45);
       text-decoration: none;
       display: flex;
       align-items: center;
@@ -111,14 +113,15 @@
       width: 100%;
       max-width: 560px;
       overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
     }
 
     /* ── Card header ── */
     .card-header {
-      background: var(--navy);
-      border-bottom: 1px solid var(--border);
-      padding: 2rem 2rem 1.75rem;
+      background: var(--teal-pale);
+      border-bottom: 1px solid rgba(29,158,117,0.2);
+      border-left: 4px solid var(--teal);
+      padding: 2rem 2rem 1.75rem 1.75rem;
       position: relative;
       overflow: hidden;
     }
@@ -224,7 +227,7 @@
     }
 
     input, select, textarea {
-      background: var(--surface-2);
+      background: #FFFFFF;
       border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text);
@@ -238,7 +241,7 @@
       -webkit-appearance: none;
     }
 
-    input::placeholder, textarea::placeholder { color: var(--dim); }
+    input::placeholder, textarea::placeholder { color: #A0AEC0; }
 
     input:focus, select:focus, textarea:focus {
       border-color: var(--teal);
@@ -246,14 +249,15 @@
     }
 
     select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236F83A3' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-color: #FFFFFF;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A5568' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 14px center;
       padding-right: 36px;
       cursor: pointer;
     }
 
-    select option { background: var(--surface-2); color: var(--text); }
+    select option { background: #FFFFFF; color: var(--text); }
 
     textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
 
@@ -362,15 +366,15 @@
 <nav>
   <a href="/" class="logo" aria-label="BasepointGrid home">
     <svg width="22" height="22" viewBox="0 0 72 72" aria-hidden="true">
-      <circle cx="12" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="36" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="60" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="12" cy="36" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="12" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="36" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="60" cy="12" r="4.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="12" cy="36" r="4.5" fill="rgba(255,255,255,0.22)"/>
       <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
-      <circle cx="60" cy="36" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="12" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="36" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="60" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
+      <circle cx="60" cy="36" r="4.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="12" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="36" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="60" cy="60" r="4.5" fill="rgba(255,255,255,0.22)"/>
     </svg>
     <span class="logo-wordmark">Basepoint<span>Grid</span></span>
   </a>

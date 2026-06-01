@@ -9,18 +9,19 @@
 
   :root {
     --navy:    #0A0E17;
-    --surface: #141922;
-    --border:  #252F42;
+    --surface: #FFFFFF;
+    --border:  #E2E8F0;
     --teal:    #1D9E75;
     --teal-hi: #24BE8B;
-    --text:    #E4EDF8;
-    --muted:   rgba(255,255,255,0.45);
-    --dim:     rgba(255,255,255,0.18);
+    --teal-pale: #EAF7F2;
+    --text:    #0A0E17;
+    --muted:   #4A5568;
+    --dim:     #718096;
   }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: #E0E0E0;
+    background: #F0F0F0;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -39,46 +40,44 @@
     text-align: center;
   }
 
-  /* CARD — 4" x 6" portrait postcard */
   .card {
     width: 4in;
     height: 6in;
-    background: var(--navy);
+    background: #FFFFFF;
+    border-left: 4px solid var(--teal);
     border-radius: 0.1in;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 12px 48px rgba(0,0,0,0.28);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.12);
     display: flex;
     flex-direction: column;
   }
 
-  /* dot grid texture */
   .card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(29,158,117,0.16) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(29,158,117,0.12) 1px, transparent 1px);
     background-size: 22px 22px;
-    opacity: 0.25;
+    opacity: 0.5;
     pointer-events: none;
   }
 
-  /* teal glow top-right */
   .card::after {
     content: '';
     position: absolute;
     top: -80px; right: -80px;
     width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(29,158,117,0.07) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(29,158,117,0.04) 0%, transparent 65%);
     pointer-events: none;
   }
 
-  /* ── HEADER ── */
   .header {
     position: relative;
     z-index: 1;
     padding: 0.18in 0.24in 0.15in;
-    border-bottom: 1px solid var(--border);
+    background: var(--teal-pale);
+    border-bottom: 1px solid rgba(29,158,117,0.2);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -242,15 +241,15 @@
     font-size: 10.5px;
   }
 
-  .step-body strong { color: rgba(255,255,255,0.7); font-weight: 500; }
+  .step-body strong { color: var(--navy); font-weight: 500; }
 
   /* ── FOOTER ── */
   .footer {
     position: relative;
     z-index: 1;
     padding: 0.12in 0.24in;
-    border-top: 1px solid var(--border);
-    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(29,158,117,0.2);
+    background: var(--teal-pale);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -262,7 +261,7 @@
     font-family: 'Syne', sans-serif;
     font-size: 11px;
     font-weight: 600;
-    color: var(--text);
+    color: var(--navy);
   }
 
   .footer-contact {
@@ -282,6 +281,7 @@
 
   .footer-qr-box {
     background: white;
+    border: 1px solid rgba(29,158,117,0.25);
     border-radius: 4px;
     padding: 3px;
     width: 46px;
@@ -321,15 +321,15 @@
   <div class="header">
     <div class="logo">
       <svg width="20" height="20" viewBox="0 0 72 72">
-        <circle cx="12" cy="12" r="4.5" fill="rgba(255,255,255,0.2)"/>
-        <circle cx="36" cy="12" r="4.5" fill="rgba(255,255,255,0.2)"/>
-        <circle cx="60" cy="12" r="4.5" fill="rgba(255,255,255,0.2)"/>
-        <circle cx="12" cy="36" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="12" cy="12" r="4.5" fill="rgba(29,158,117,0.35)"/>
+        <circle cx="36" cy="12" r="4.5" fill="rgba(29,158,117,0.35)"/>
+        <circle cx="60" cy="12" r="4.5" fill="rgba(29,158,117,0.35)"/>
+        <circle cx="12" cy="36" r="4.5" fill="rgba(29,158,117,0.35)"/>
         <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
-        <circle cx="60" cy="36" r="4.5" fill="rgba(255,255,255,0.2)"/>
-        <circle cx="12" cy="60" r="4.5" fill="rgba(255,255,255,0.2)"/>
-        <circle cx="36" cy="60" r="4.5" fill="rgba(255,255,255,0.2)"/>
-        <circle cx="60" cy="60" r="4.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="60" cy="36" r="4.5" fill="rgba(29,158,117,0.35)"/>
+        <circle cx="12" cy="60" r="4.5" fill="rgba(29,158,117,0.35)"/>
+        <circle cx="36" cy="60" r="4.5" fill="rgba(29,158,117,0.35)"/>
+        <circle cx="60" cy="60" r="4.5" fill="rgba(29,158,117,0.35)"/>
       </svg>
       <div class="logo-wordmark">Basepoint<span>Grid</span></div>
     </div>
