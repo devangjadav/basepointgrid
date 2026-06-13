@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EV Charging Interest — BasepointGrid</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f3;
+      color: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1a1a2e;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header .logo-mark {
+      width: 28px;
+      height: 28px;
+      background: #2dd4a0;
+      border-radius: 6px;
+    }
+
+    header span {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .property-badge {
+      display: inline-block;
+      background: #e8faf4;
+      color: #1a7a5e;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .question {
+      margin-bottom: 22px;
+    }
+
+    label.question-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      font-size: 14px;
+      color: #1a1a2e;
+      user-select: none;
+    }
+
+    .option:hover {
+      border-color: #2dd4a0;
+      background: #f0fdf8;
+    }
+
+    .option input[type="radio"] {
+      accent-color: #2dd4a0;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .option.selected {
+      border-color: #2dd4a0;
+      background: #e8faf4;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #1a1a2e;
+      font-family: inherit;
+      transition: border-color 0.15s;
+      background: #fff;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: #2dd4a0;
+    }
+
+    .text-input::placeholder {
+      color: #aaa;
+    }
+
+    .divider {
+      height: 1px;
+      background: #f0f0f0;
+      margin: 24px 0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #2dd4a0;
+      color: #1a1a2e;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+      font-family: inherit;
+    }
+
+    .submit-btn:hover { background: #25bc8e; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .fine-print {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* Success state */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .success-icon {
+      width: 52px;
+      height: 52px;
+      background: #e8faf4;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 24px;
+    }
+
+    .success h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .success p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Error */
+    .error-msg {
+      display: none;
+      background: #fef2f2;
+      color: #c0392b;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    /* Not found */
+    .not-found {
+      display: none;
+      text-align: center;
+      padding: 32px 0;
+    }
+
+    .not-found p {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark"></div>
+  <span>BasepointGrid</span>
+</header>
+
+<main>
+  <div class="card">
+
+    <!-- Not found state -->
+    <div class="not-found" id="notFound">
+      <p>This survey link doesn't look right. If you got this from a flyer, please contact Devang at 925-452-7558.</p>
+    </div>
+
+    <!-- Form -->
+    <div id="formWrap">
+      <div class="property-badge" id="propertyBadge">Loading...</div>
+      <h1>Should your building get EV charging?</h1>
+      <p class="subtitle">Takes 60 seconds. Your answer helps us decide whether to install chargers here — at no cost to your building.</p>
+
+      <div class="error-msg" id="errorMsg">Something went wrong. Please try again or text Devang at 925-452-7558.</div>
+
+      <!-- Q1 -->
+      <div class="question">
+        <label class="question-label">1. Do you currently drive an electric vehicle?</label>
+        <div class="options" id="q1">
+          <label class="option"><input type="radio" name="ev_status" value="yes"> Yes, I drive an EV now</label>
+          <label class="option"><input type="radio" name="ev_status" value="planning"> No, but I'm planning to buy one</label>
+          <label class="option"><input type="radio" name="ev_status" value="would_consider"> No, but I'd consider it if charging was here</label>
+          <label class="option"><input type="radio" name="ev_status" value="no"> No and not planning to</label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question">
+        <label class="question-label">2. If chargers were installed in the parking lot, how regularly would you use them?</label>
+        <div class="options" id="q2">
+          <label class="option"><input type="radio" name="would_use" value="definitely"> Definitely regularly — I need this</label>
+          <label class="option"><input type="radio" name="would_use" value="probably"> Probably regularly</label>
+          <label class="option"><input type="radio" name="would_use" value="maybe"> Maybe occasionally</label>
+          <label class="option"><input type="radio" name="would_use" value="no"> Probably not</label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question">
+        <label class="question-label">3. Your unit number</label>
+        <input type="text" class="text-input" id="unitNumber" placeholder="e.g. 6, 14B, 203" maxlength="10" />
+      </div>
+
+      <!-- Q4 -->
+      <div class="question">
+        <label class="question-label">4. Your email — we'll confirm your response and follow up when a decision is made</label>
+        <input type="email" class="text-input" id="email" placeholder="you@email.com" />
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">Submit — takes 5 seconds</button>
+      <p class="fine-print">No spam. We'll only contact you about EV charging at your building.</p>
+    </div>
+
+    <!-- Success -->
+    <div class="success" id="successMsg">
+      <div class="success-icon">⚡</div>
+      <h2>You're on the list.</h2>
+      <p>Check your email for confirmation. We'll reach out when a decision has been made about charging at your building.</p>
+      <p style="margin-top:12px; font-size:13px; color:#999;">Questions? Text Devang at 925-452-7558.</p>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  const SUPABASE_URL = 'https://svfdyvsabcdgqtwpwioc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2ZmR5dnNhYmNkZ3F0d3B3aW9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjQ5ODAsImV4cCI6MjA5Njk0MDk4MH0.lkyCAXiJBATdcgdLe4xmDUd1m305MZQBtcBzrjq59nM';
+
+  const params = new URLSearchParams(window.location.search);
+  const propertySlug = params.get('p');
+
+  let propertyData = null;
+
+  async function init() {
+    if (!propertySlug) {
+      document.getElementById('notFound').style.display = 'block';
+      document.getElementById('formWrap').style.display = 'none';
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/properties?slug=eq.${propertySlug}&active=eq.true&select=slug,display_name,city,total_units`,
+        { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+      );
+      const data = await res.json();
+
+      if (!data.length) {
+        document.getElementById('notFound').style.display = 'block';
+        document.getElementById('formWrap').style.display = 'none';
+        return;
+      }
+
+      propertyData = data[0];
+      document.getElementById('propertyBadge').textContent = `${propertyData.display_name} · ${propertyData.city}`;
+      document.title = `EV Charging Interest — ${propertyData.display_name}`;
+    } catch (e) {
+      document.getElementById('propertyBadge').textContent = 'Your Building';
+    }
+  }
+
+  // Highlight selected options
+  document.addEventListener('change', function(e) {
+    if (e.target.type === 'radio') {
+      const group = e.target.closest('.options');
+      group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      e.target.closest('.option').classList.add('selected');
+    }
+  });
+
+  function scoreSubmission(evStatus, wouldUse) {
+    const evPts = { yes: 5, planning: 3, would_consider: 2, no: 0 };
+    const usePts = { definitely: 5, probably: 3, maybe: 1, no: 0 };
+    return (evPts[evStatus] || 0) + (usePts[wouldUse] || 0);
+  }
+
+  async function handleSubmit() {
+    const evStatus = document.querySelector('input[name="ev_status"]:checked')?.value;
+    const wouldUse = document.querySelector('input[name="would_use"]:checked')?.value;
+    const unitNumber = document.getElementById('unitNumber').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    if (!evStatus || !wouldUse || !unitNumber || !email) {
+      alert('Please answer all four questions before submitting.');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    document.getElementById('errorMsg').style.display = 'none';
+
+    const score = scoreSubmission(evStatus, wouldUse);
+
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          property_slug: propertySlug,
+          property_name: propertyData?.display_name || propertySlug,
+          ev_status: evStatus,
+          would_use: wouldUse,
+          unit_number: unitNumber,
+          email: email,
+          score: score
+        })
+      });
+
+      if (!res.ok) throw new Error('Server error');
+
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+
+    } catch (e) {
+      document.getElementById('errorMsg').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Submit — takes 5 seconds';
+    }
+  }
+
+  init();
+</script>
+
+</body>
+</html>
