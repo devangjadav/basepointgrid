@@ -237,6 +237,16 @@
       font-size: 14px;
       color: #555;
     }
+
+    /* Honeypot — visually hidden but present in DOM for bots to fill */
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>
@@ -294,6 +304,12 @@
       <div class="question">
         <label class="question-label">4. Your email — we'll confirm your response and follow up when a decision is made</label>
         <input type="email" class="text-input" id="email" placeholder="you@email.com" />
+      </div>
+
+      <!-- Honeypot field — hidden from real users, bots often fill it -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
       </div>
 
       <div class="divider"></div>
@@ -387,6 +403,7 @@
     document.getElementById('errorMsg').style.display = 'none';
 
     const score = scoreSubmission(evStatus, wouldUse);
+    const honeypot = document.getElementById('website').value;
 
     try {
       const res = await fetch('/api/submit', {
@@ -399,9 +416,18 @@
           would_use: wouldUse,
           unit_number: unitNumber,
           email: email,
-          score: score
+          score: score,
+          website: honeypot
         })
       });
+
+      if (res.status === 409) {
+        document.getElementById('formWrap').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+        document.querySelector('#successMsg h2').textContent = "You're already on the list.";
+        document.querySelector('#successMsg p').textContent = "We already have a response from this email for this building.";
+        return;
+      }
 
       if (!res.ok) throw new Error('Server error');
 
