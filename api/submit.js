@@ -4,22 +4,14 @@
 //
 // Protections:
 // 1. Honeypot field — bots that autofill hidden fields get silently rejected
-// 2. Property slug allowlist — only known property slugs accepted
+// 2. Property slug check — validated live against the `properties` table in
+//    Supabase (active=true), so adding a new property is a database insert,
+//    not a code change
 // 3. Enum validation — ev_status / would_use must be from known sets
 // 4. Email format validation
 // 5. Duplicate check — one submission per email per property
 // 6. Loose IP rate limit — backstop against flood attacks (20/hour), high enough
 //    to never block a shared-apartment-WiFi IP under normal use
-
-const VALID_PROPERTY_SLUGS = [
-  'timbers',
-  'parklane',
-  'coral-gardens',
-  'lakes-at-concord',
-  'diablo-view',
-  'whispering-oaks',
-  'parkside-royale'
-];
 
 const VALID_EV_STATUS = ['yes', 'planning', 'would_consider', 'no'];
 const VALID_WOULD_USE = ['definitely', 'probably', 'maybe', 'no'];
@@ -57,11 +49,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // ── Property slug allowlist ───────────────────────────────────────────────
-  if (!VALID_PROPERTY_SLUGS.includes(property_slug)) {
-    return res.status(400).json({ error: 'Invalid property' });
-  }
-
   // ── Enum validation ────────────────────────────────────────────────────────
   if (!VALID_EV_STATUS.includes(ev_status) || !VALID_WOULD_USE.includes(would_use)) {
     return res.status(400).json({ error: 'Invalid response values' });
@@ -91,6 +78,27 @@ export default async function handler(req, res) {
     'apikey': SUPABASE_SERVICE_KEY,
     'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`
   };
+
+  // ── Property slug check — live lookup against properties table ───────────
+  try {
+    const propRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/properties?slug=eq.${encodeURIComponent(property_slug)}&active=eq.true&select=slug`,
+      { headers: supabaseHeaders }
+    );
+
+    if (!propRes.ok) {
+      console.error('Property check error:', await propRes.text());
+      return res.status(500).json({ error: 'Could not validate property' });
+    }
+
+    const propRows = await propRes.json();
+    if (propRows.length === 0) {
+      return res.status(400).json({ error: 'Invalid property' });
+    }
+  } catch (e) {
+    console.error('Property check fetch error:', e);
+    return res.status(500).json({ error: 'Could not validate property' });
+  }
 
   // Get client IP (Vercel populates this header)
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
