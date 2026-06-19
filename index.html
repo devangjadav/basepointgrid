@@ -1,599 +1,494 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BasepointGrid — EV Charging Infrastructure for Multifamily Properties</title>
-  <meta name="description" content="BasepointGrid installs, owns, and operates EV charging infrastructure at multifamily properties. Zero cost to property owners. Fully managed.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasepointGrid — EV Charging Infrastructure for Multifamily Properties</title>
+<meta name="description" content="BasepointGrid installs and operates EV charging infrastructure at multifamily properties. $0 equipment cost to property owners. Fully managed.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-    :root {
-      --navy:      #0A0E17;
-      --surface:   #FFFFFF;
-      --surface-2: #F4F6F9;
-      --border:    #E2E8F0;
-      --teal:      #1D9E75;
-      --teal-hi:   #24BE8B;
-      --teal-dim:  rgba(29,158,117,0.08);
-      --teal-glow: rgba(29,158,117,0.04);
-      --text:      #0A0E17;
-      --muted:     #4A5568;
-      --dim:       #718096;
-    }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; }
 
-    body {
-      background: #F8FAFC;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 16px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    background: #ffffff;
+    color: #14161a;
+    line-height: 1.5;
+  }
 
-    a { color: inherit; }
+  a { text-decoration: none; color: inherit; }
 
-    /* ── Nav ─────────────────────────────── */
-    nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 100;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2.5rem;
-      background: rgba(10,14,23,0.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid #252F42;
-    }
+  .container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
+  /* ───────── NAV (dark) ───────── */
+  nav {
+    background: #1c1f26;
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
 
-    .logo-wordmark {
-      font-family: 'Syne', sans-serif;
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.2px;
-      color: #E4EDF8;
-    }
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    nav .logo-wordmark { color: #E4EDF8; }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .logo-wordmark span { color: var(--teal); }
+  .nav-logo {
+    font-size: 19px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.3px;
+  }
 
-    .btn-nav {
-      display: inline-flex;
-      align-items: center;
-      background: var(--teal);
-      color: #fff;
-      padding: 9px 22px;
-      border-radius: 7px;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background 0.18s, transform 0.12s;
-    }
+  .nav-logo span {
+    color: #2EA876;
+  }
 
-    .btn-nav:hover { background: var(--teal-hi); transform: translateY(-1px); }
+  .nav-cta {
+    background: #2EA876;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    transition: opacity 0.15s;
+  }
 
-    /* ── Hero ────────────────────────────── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 100px 2.5rem 5rem;
-      position: relative;
-      overflow: hidden;
-    }
+  .nav-cta:hover {
+    opacity: 0.88;
+  }
 
-    .hero-grid-bg {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(29,158,117,0.18) 1px, transparent 1px);
-      background-size: 36px 36px;
-      opacity: 0.12;
-      pointer-events: none;
-    }
+  /* ───────── HERO (light) ───────── */
+  .hero {
+    background: linear-gradient(135deg, #fbfcfb 0%, #f3f8f5 55%, #eaf4ee 100%);
+    padding: 80px 0 70px;
+  }
 
-    .hero-glow {
-      position: absolute;
-      top: -160px;
-      right: -100px;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(29,158,117,0.07) 0%, transparent 65%);
-      pointer-events: none;
-    }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1f8f5e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #e3f5ec;
+    border: 1px solid #c5ead8;
+    padding: 7px 16px;
+    border-radius: 30px;
+    margin-bottom: 28px;
+  }
 
-    .hero-inner {
-      max-width: 800px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
+  .hero-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2EA876;
+  }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--teal-dim);
-      border: 1px solid rgba(29,158,117,0.28);
-      color: var(--teal-hi);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 2rem;
-    }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.12;
+    max-width: 760px;
+    margin-bottom: 26px;
+    letter-spacing: -1px;
+    color: #14161a;
+  }
 
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-    }
+  .hero h1 em {
+    color: #2EA876;
+    font-style: normal;
+  }
 
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
-      font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -1.2px;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-    }
+  .hero-sub {
+    font-size: 17.5px;
+    color: #5a6169;
+    max-width: 600px;
+    line-height: 1.65;
+    margin-bottom: 36px;
+  }
 
-    h1 em {
-      font-style: normal;
-      color: var(--teal);
-    }
+  .hero-buttons {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 70px;
+  }
 
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 580px;
-      line-height: 1.72;
-      margin-bottom: 2.75rem;
-    }
+  .btn-primary {
+    background: #2EA876;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 26px;
+    border-radius: 8px;
+    transition: opacity 0.15s;
+  }
 
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--teal);
-      color: #fff;
-      padding: 14px 30px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background 0.18s, transform 0.12s;
-    }
+  .btn-secondary {
+    background: white;
+    color: #14161a;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 26px;
+    border-radius: 8px;
+    border: 1px solid #d8dde1;
+    transition: border-color 0.15s;
+  }
 
-    .btn-primary:hover { background: var(--teal-hi); transform: translateY(-1px); }
+  .btn-secondary:hover {
+    border-color: #2EA876;
+  }
 
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      color: var(--text);
-      padding: 14px 30px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 500;
-      text-decoration: none;
-      border: 1px solid #CBD5E0;
-      transition: border-color 0.18s, color 0.18s;
-    }
+  /* ───────── STATS ───────── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
 
-    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1f8f5e;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
 
-    /* ── Stats bar ───────────────────────── */
-    .stats-bar {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 2.25rem 2.5rem;
-    }
+  .stat-label {
+    font-size: 13.5px;
+    color: #6b7178;
+    line-height: 1.45;
+  }
 
-    .stats-grid {
-      max-width: 920px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 2rem;
-      text-align: center;
-    }
+  /* ───────── SECTION GENERAL ───────── */
+  section {
+    padding: 84px 0;
+  }
 
-    .stat-n {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--teal);
-      line-height: 1;
-      margin-bottom: 7px;
-    }
+  .section-eyebrow {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1f8f5e;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
 
-    .stat-l {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
+  .section-title {
+    font-size: 33px;
+    font-weight: 800;
+    color: #14161a;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+    max-width: 620px;
+  }
 
-    /* ── Sections ────────────────────────── */
-    section { padding: 5.5rem 2.5rem; }
+  .section-sub {
+    font-size: 15.5px;
+    color: #5a6169;
+    max-width: 580px;
+    line-height: 1.65;
+    margin-bottom: 52px;
+  }
 
-    .inner { max-width: 920px; margin: 0 auto; }
+  /* ───────── HOW IT WORKS ───────── */
+  .how-it-works {
+    background: #f7f9f8;
+  }
 
-    .eyebrow {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 1.6px;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 1rem;
-    }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
 
-    h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.65rem, 3vw, 2.3rem);
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      line-height: 1.18;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
+  .step-card {
+    background: white;
+    border-radius: 12px;
+    padding: 32px 28px;
+    border: 1px solid #e6e9eb;
+  }
 
-    .sec-sub {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.72;
-      margin-bottom: 3rem;
-    }
+  .step-card-num {
+    font-size: 13px;
+    font-weight: 800;
+    color: #2EA876;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
 
-    /* ── Steps ───────────────────────────── */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
+  .step-card h3 {
+    font-size: 18.5px;
+    font-weight: 700;
+    color: #14161a;
+    margin-bottom: 10px;
+  }
 
-    .step {
-      background: var(--surface);
-      padding: 2.25rem;
-    }
+  .step-card p {
+    font-size: 14px;
+    color: #5a6169;
+    line-height: 1.65;
+  }
 
-    .step-n {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--teal);
-      letter-spacing: 1.2px;
-      margin-bottom: 1rem;
-    }
+  .step-card .highlight {
+    color: #14161a;
+    font-weight: 600;
+  }
 
-    .step h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-    }
+  /* ───────── WHY SECTION ───────── */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
 
-    .step p {
-      font-size: 0.975rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+  .why-card {
+    padding: 28px;
+    border: 1px solid #e6e9eb;
+    border-radius: 12px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
 
-    /* ── Props ───────────────────────────── */
-    .props {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-    }
+  .why-card:hover {
+    border-color: #2EA876;
+    box-shadow: 0 4px 16px rgba(46,168,118,0.08);
+  }
 
-    .prop {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.75rem 1.75rem 1.75rem;
-      transition: border-color 0.2s;
-    }
+  .why-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #14161a;
+    margin-bottom: 9px;
+  }
 
-    .prop:hover { border-color: rgba(29,158,117,0.5); }
+  .why-card p {
+    font-size: 13.5px;
+    color: #5a6169;
+    line-height: 1.65;
+  }
 
-    .prop-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--teal-dim);
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
+  /* ───────── CONTACT ───────── */
+  .contact-section {
+    background: #1c1f26;
+    color: white;
+    text-align: center;
+  }
 
-    .prop h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.98rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-    }
+  .contact-section .section-eyebrow {
+    color: #4FCB97;
+  }
 
-    .prop p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+  .contact-section .section-title {
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    /* ── Contact ─────────────────────────── */
-    #contact {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-    }
+  .contact-section .section-sub {
+    color: #aab0b6;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    .contact-wrap {
-      max-width: 620px;
-      margin: 0 auto;
-      text-align: center;
-    }
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
 
-    .contact-wrap .sec-sub { margin: 0.75rem auto 2.25rem; }
+  .contact-info a {
+    font-size: 16.5px;
+    font-weight: 600;
+    color: #4FCB97;
+  }
 
-    .contact-links {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  /* ───────── FOOTER ───────── */
+  footer {
+    padding: 26px 0;
+    border-top: 1px solid #e6e9eb;
+  }
 
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 26px;
-      text-decoration: none;
-      color: var(--text);
-      font-size: 16px;
-      font-weight: 500;
-      transition: border-color 0.18s, color 0.18s;
-    }
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #8a9097;
+  }
 
-    .contact-link:hover { border-color: var(--teal); color: var(--teal); }
-
-    /* ── Footer ──────────────────────────── */
-    footer {
-      padding: 1.5rem 2.5rem;
-      text-align: center;
-      font-size: 12px;
-      color: #3A4A63;
-      background: #0A0E17;
-      border-top: 1px solid #252F42;
-    }
-
-    /* ── Responsive ──────────────────────── */
-    @media (max-width: 600px) {
-      nav { padding: 0 1.25rem; }
-      .hero { padding: 80px 1.25rem 3.5rem; }
-      section { padding: 3.5rem 1.25rem; }
-      .stats-bar { padding: 1.75rem 1.25rem; }
-    }
-  </style>
+  /* ───────── RESPONSIVE ───────── */
+  @media (max-width: 860px) {
+    .hero h1 { font-size: 36px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid, .why-grid { grid-template-columns: 1fr; }
+    footer .container { flex-direction: column; gap: 10px; text-align: center; }
+  }
+</style>
 </head>
 <body>
 
-<!-- Nav -->
+<!-- NAV -->
 <nav>
-  <a href="#" class="logo" aria-label="BasepointGrid home">
-    <svg width="26" height="26" viewBox="0 0 72 72" aria-hidden="true">
-      <circle cx="12" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="36" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="60" cy="12" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="12" cy="36" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="36" cy="36" r="12" fill="#1D9E75"/>
-      <circle cx="60" cy="36" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="12" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="36" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
-      <circle cx="60" cy="60" r="4.5" fill="rgba(110,130,165,0.45)"/>
-    </svg>
-    <span class="logo-wordmark">Basepoint<span>Grid</span></span>
-  </a>
-  <a href="#contact" class="btn-nav">Get in touch</a>
+  <div class="container">
+    <a href="#" class="nav-brand">
+      <svg width="26" height="26" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="5" fill="#2EA876"/>
+        <circle cx="16" cy="4" r="2.5" fill="#2EA876" opacity="0.6"/>
+        <circle cx="16" cy="28" r="2.5" fill="#2EA876" opacity="0.6"/>
+        <circle cx="4" cy="16" r="2.5" fill="#2EA876" opacity="0.6"/>
+        <circle cx="28" cy="16" r="2.5" fill="#2EA876" opacity="0.6"/>
+        <circle cx="6.5" cy="6.5" r="2" fill="#2EA876" opacity="0.35"/>
+        <circle cx="25.5" cy="6.5" r="2" fill="#2EA876" opacity="0.35"/>
+        <circle cx="6.5" cy="25.5" r="2" fill="#2EA876" opacity="0.35"/>
+        <circle cx="25.5" cy="25.5" r="2" fill="#2EA876" opacity="0.35"/>
+        <line x1="16" y1="11" x2="16" y2="6.5" stroke="#2EA876" stroke-width="1" opacity="0.5"/>
+        <line x1="16" y1="21" x2="16" y2="25.5" stroke="#2EA876" stroke-width="1" opacity="0.5"/>
+        <line x1="11" y1="16" x2="6.5" y2="16" stroke="#2EA876" stroke-width="1" opacity="0.5"/>
+        <line x1="21" y1="16" x2="25.5" y2="16" stroke="#2EA876" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <span class="nav-logo">Basepoint<span>Grid</span></span>
+    </a>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-grid-bg" aria-hidden="true"></div>
-  <div class="hero-glow" aria-hidden="true"></div>
-  <div class="hero-inner">
-    <div class="badge"><span class="badge-dot"></span>East Bay · Expanding nationwide</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow"><span class="dot"></span>East Bay · Expanding nationwide</div>
     <h1>EV charging infrastructure,<br><em>built for multifamily.</em></h1>
-    <p class="hero-sub">BasepointGrid funds, installs, and manages ChargePoint Level 2 EV chargers at your property — at zero cost to you. Your residents get reliable charging. You earn a monthly revenue share.</p>
-    <div class="hero-actions">
+    <p class="hero-sub">BasepointGrid provides a premium Smart-Networked EV charger at your property — at $0 equipment cost to you. Your residents get reliable charging. You earn a monthly revenue share.</p>
+    <div class="hero-buttons">
       <a href="#contact" class="btn-primary">Schedule a property review</a>
-      <a href="#how-it-works" class="btn-ghost">See how it works</a>
+      <a href="#how-it-works" class="btn-secondary">See how it works</a>
     </div>
-  </div>
-</section>
 
-<!-- Stats -->
-<div class="stats-bar">
-  <div class="stats-grid">
-    <div>
-      <div class="stat-n">1 in 4</div>
-      <div class="stat-l">New cars purchased in the East Bay are electric</div>
-    </div>
-    <div>
-      <div class="stat-n">10%</div>
-      <div class="stat-l">Of vehicles in Alameda &amp; Contra Costa counties are EVs today</div>
-    </div>
-    <div>
-      <div class="stat-n">$0</div>
-      <div class="stat-l">Upfront cost to your property — ever</div>
-    </div>
-    <div>
-      <div class="stat-n">20%</div>
-      <div class="stat-l">Gross revenue share for Founding Partner properties</div>
+    <div class="stats">
+      <div>
+        <div class="stat-num">1 in 4</div>
+        <div class="stat-label">New cars purchased in the East Bay are electric</div>
+      </div>
+      <div>
+        <div class="stat-num">10%</div>
+        <div class="stat-label">Of vehicles in Alameda &amp; Contra Costa counties are EVs today</div>
+      </div>
+      <div>
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Equipment cost to your property — ever</div>
+      </div>
+      <div>
+        <div class="stat-num">10–15%</div>
+        <div class="stat-label">Gross revenue share for Founding Partner properties</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- How it works -->
-<section id="how-it-works">
-  <div class="inner">
-    <p class="eyebrow">How it works</p>
-    <h2>Simple for you.<br>Reliable for your residents.</h2>
-    <p class="sec-sub">BasepointGrid handles every part of the EV charging operation. You sign a site license and we handle the rest — permanently.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">01</div>
-        <h3>We fund &amp; install</h3>
-        <p>BasepointGrid covers 100% of hardware and installation costs. ChargePoint CT4000 dual-port Level 2 chargers — commercial grade, built for long-term operation.</p>
+<!-- HOW IT WORKS -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-title">Simple for you. Reliable for your residents.</h2>
+    <p class="section-sub">BasepointGrid handles the equipment, the paperwork, and the operation. You sign a site-host agreement and set aside a couple of parking spots — we handle the rest.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-card-num">01</div>
+        <h3>We provide the hardware</h3>
+        <p>BasepointGrid covers <span class="highlight">$10,000 in commercial hardware at $0 upfront equipment cost</span> to your property — a premium dual-port Smart Charger, commercial grade, built for long-term operation.</p>
       </div>
-      <div class="step">
-        <div class="step-n">02</div>
+      <div class="step-card">
+        <div class="step-card-num">02</div>
         <h3>Residents charge</h3>
-        <p>Your residents access charging through the ChargePoint network using their phone. No fobs, no keys. Billing is handled automatically per session.</p>
+        <p>Your residents access charging from their phone. No fobs, no keys. Billing is handled automatically per session, day and night.</p>
       </div>
-      <div class="step">
-        <div class="step-n">03</div>
+      <div class="step-card">
+        <div class="step-card-num">03</div>
         <h3>You earn every month</h3>
-        <p>You receive a monthly revenue share from every session charged at your property. Estimated $350–$600/month at a typical deployment. No management required on your end.</p>
+        <p>You receive a monthly revenue share from every session charged at your property. <span class="highlight">Estimated $70–$85/month</span> for a single-charger pilot. No management required on your end.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Why BasepointGrid -->
-<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="inner">
-    <p class="eyebrow">Why BasepointGrid</p>
-    <h2>Built around the property owner.</h2>
-    <p class="sec-sub">Most EV charging programs ask you to buy equipment or manage vendors. We built ours to be completely hands-off for you.</p>
-    <div class="props">
-      <div class="prop">
-        <div class="prop-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <rect x="2" y="8" width="16" height="10" rx="2" stroke="#1D9E75" stroke-width="1.5"/>
-            <path d="M6 8V5a4 4 0 018 0v3" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Zero upfront cost</h3>
-        <p>We fund 100% of hardware, installation, permitting, and ongoing maintenance. No capital required from you — now or ever.</p>
+<!-- WHY BASEPOINTGRID -->
+<section id="why">
+  <div class="container">
+    <div class="section-eyebrow">Why BasepointGrid</div>
+    <h2 class="section-title">Built around the property owner.</h2>
+    <p class="section-sub">Most EV charging programs ask you to buy equipment or manage vendors. We built ours to put as little as possible on your plate.</p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <h3>$0 equipment cost</h3>
+        <p>We fund 100% of the hardware, PG&amp;E permitting and engineering, and ongoing maintenance. The only piece that may fall to you is property-side electrical conduit — handled by a local electrician we connect you with, or routed through PG&amp;E's infrastructure funding program.</p>
       </div>
-      <div class="prop">
-        <div class="prop-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="7.5" stroke="#1D9E75" stroke-width="1.5"/>
-            <path d="M10 6v4l2.5 2.5" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+      <div class="why-card">
         <h3>Fully managed operation</h3>
-        <p>ChargePoint network monitoring, driver support, maintenance, and billing — all handled by BasepointGrid. Fully passive for you.</p>
+        <p>Network monitoring, driver support, maintenance, and billing — all handled by BasepointGrid. Fully passive for you.</p>
       </div>
-      <div class="prop">
-        <div class="prop-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M3 10l4 4 10-8" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
+      <div class="why-card">
         <h3>Founding Partner rate</h3>
-        <p>Our first five properties lock in a 20% gross revenue share — for the life of our partnership. Only a handful of slots remain.</p>
+        <p>Our first five properties start at a 10% gross revenue share — stepping up to 15% as your property helps drive resident adoption and usage. Only a handful of slots remain.</p>
       </div>
-      <div class="prop">
-        <div class="prop-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 2L3 7v11h5v-4h4v4h5V7L10 2z" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
+      <div class="why-card">
         <h3>$1.5M liability coverage</h3>
         <p>BasepointGrid maintains a $1.5M commercial general liability policy naming your property as additional insured on every installation.</p>
       </div>
-      <div class="prop">
-        <div class="prop-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <rect x="2" y="3" width="16" height="14" rx="2" stroke="#1D9E75" stroke-width="1.5"/>
-            <path d="M2 8h16" stroke="#1D9E75" stroke-width="1.5"/>
-            <path d="M6 12h4M6 15h2" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+      <div class="why-card">
         <h3>Streamlined permitting</h3>
         <p>California AB 1236 establishes a non-discretionary permit process for EV charger installations. No planning commission review required.</p>
       </div>
-      <div class="prop">
-        <div class="prop-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="5" cy="10" r="2.5" stroke="#1D9E75" stroke-width="1.5"/>
-            <circle cx="15" cy="5" r="2.5" stroke="#1D9E75" stroke-width="1.5"/>
-            <circle cx="15" cy="15" r="2.5" stroke="#1D9E75" stroke-width="1.5"/>
-            <path d="M7.5 9L12.5 6M7.5 11L12.5 14" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>ChargePoint commercial hardware</h3>
-        <p>CT4000 dual-port stations on the ChargePoint network — the largest EV charging network in North America, with 24/7 driver support.</p>
+      <div class="why-card">
+        <h3>Premium Smart-Networked hardware</h3>
+        <p>Commercial-grade dual-port Level 2 charging with 24/7 network monitoring and driver support, built for daily multifamily use.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact">
-  <div class="contact-wrap">
-    <p class="eyebrow">Contact us</p>
-    <h2>Let's talk about your property.</h2>
-    <p class="sec-sub">We work with property owners across the East Bay. If you own a multifamily property and want to offer EV charging at zero cost, reach out — we respond within 24 hours.</p>
-    <div class="contact-links">
-      <a href="tel:9254527558" class="contact-link">
-        <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M3 3h4l2 4-2.5 1.5a11 11 0 005 5L13 11l4 2v4a2 2 0 01-2 2A16 16 0 013 3z" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        925-452-7558
-      </a>
-      <a href="mailto:info@basepointgrid.com" class="contact-link">
-        <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <rect x="2" y="4" width="16" height="13" rx="2" stroke="#1D9E75" stroke-width="1.5"/>
-          <path d="M2 7l8 5 8-5" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        info@basepointgrid.com
-      </a>
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="section-eyebrow">Contact us</div>
+    <h2 class="section-title">Let's talk about your property.</h2>
+    <p class="section-sub">We work with property owners across the East Bay. If you own a multifamily property and want to offer EV charging at $0 equipment cost, reach out — we respond within 24 hours.</p>
+    <div class="contact-info">
+      <a href="tel:9254527558">925-452-7558</a>
+      <a href="mailto:info@basepointgrid.com">info@basepointgrid.com</a>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
+<!-- FOOTER -->
 <footer>
-  <p>© 2026 BasepointGrid &nbsp;·&nbsp; A Plumeria Lux LLC company &nbsp;·&nbsp; East Bay, California</p>
+  <div class="container">
+    <div>© 2026 BasepointGrid · A Plumeria Lux LLC company · East Bay, California</div>
+    <div>info@basepointgrid.com</div>
+  </div>
 </footer>
 
 </body>
