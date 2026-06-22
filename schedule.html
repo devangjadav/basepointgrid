@@ -294,6 +294,20 @@
       line-height: 1.5;
     }
 
+    input.error, select.error, textarea.error {
+      border-color: #E53E3E;
+      box-shadow: 0 0 0 3px rgba(229,62,62,0.1);
+    }
+
+    .field-error {
+      font-size: 12px;
+      color: #E53E3E;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field-error.visible { display: block; }
+
     /* ── Success state ── */
     .success {
       display: none;
@@ -423,27 +437,32 @@
           <div class="field">
             <label for="name">Your name *</label>
             <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name">
+            <span class="field-error" id="name-err">Please enter your name.</span>
           </div>
           <div class="field">
             <label for="phone">Phone number *</label>
             <input type="tel" id="phone" name="phone" placeholder="(510) 555-0100" required autocomplete="tel">
+            <span class="field-error" id="phone-err">Please enter a phone number.</span>
           </div>
         </div>
 
         <div class="field">
           <label for="email">Email address *</label>
           <input type="email" id="email" name="email" placeholder="jane@example.com" required autocomplete="email">
+          <span class="field-error" id="email-err">Please enter a valid email address.</span>
         </div>
 
         <div class="field">
           <label for="street">Property street address *</label>
           <input type="text" id="street" name="property_street" placeholder="e.g. 22100 Foothill Blvd" required autocomplete="address-line1">
+          <span class="field-error" id="street-err">Please enter the property address.</span>
         </div>
 
         <div class="form-row">
           <div class="field">
             <label for="city">City *</label>
             <input type="text" id="city" name="property_city" placeholder="e.g. Hayward" required autocomplete="address-level2">
+            <span class="field-error" id="city-err">Please enter the city.</span>
           </div>
           <div class="field">
             <label for="units">Number of units *</label>
@@ -454,6 +473,7 @@
               <option value="51-100">51 – 100 units</option>
               <option value="101+">101+ units</option>
             </select>
+            <span class="field-error" id="units-err">Please select a unit range.</span>
           </div>
         </div>
 
@@ -469,15 +489,17 @@
               <option value="Friday">Friday</option>
               <option value="Saturday">Saturday</option>
             </select>
+            <span class="field-error" id="day-err">Please select a preferred day.</span>
           </div>
           <div class="field">
             <label for="window">Preferred time window *</label>
-            <select id="window" name="preferred_time">
+            <select id="window" name="preferred_time" required>
               <option value="" disabled selected>Select window</option>
               <option value="Morning (8am–12pm)">Morning (8am – 12pm)</option>
               <option value="Afternoon (12pm–5pm)">Afternoon (12pm – 5pm)</option>
               <option value="Evening (5pm–7pm)">Evening (5pm – 7pm)</option>
             </select>
+            <span class="field-error" id="window-err">Please select a time window.</span>
           </div>
         </div>
 
@@ -521,8 +543,65 @@
   const formWrap = document.getElementById('formWrap');
   const success = document.getElementById('successState');
 
+  function showError(id, msg) {
+    const el = document.getElementById(id + '-err');
+    const input = document.getElementById(id);
+    if (el) { el.textContent = msg || el.textContent; el.classList.add('visible'); }
+    if (input) input.classList.add('error');
+  }
+
+  function clearError(id) {
+    const el = document.getElementById(id + '-err');
+    const input = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+    if (input) input.classList.remove('error');
+  }
+
+  // Clear errors on input/change
+  ['name','phone','email','street','city'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => clearError(id));
+  });
+  ['units','day','window'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', () => clearError(id));
+  });
+
+  function validate() {
+    let ok = true;
+
+    const name = document.getElementById('name').value.trim();
+    if (!name) { showError('name', 'Please enter your name.'); ok = false; } else clearError('name');
+
+    const phone = document.getElementById('phone').value.trim();
+    if (!phone) { showError('phone', 'Please enter a phone number.'); ok = false; } else clearError('phone');
+
+    const email = document.getElementById('email').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk) { showError('email', 'Please enter a valid email address.'); ok = false; } else clearError('email');
+
+    const street = document.getElementById('street').value.trim();
+    if (!street) { showError('street', 'Please enter the property address.'); ok = false; } else clearError('street');
+
+    const city = document.getElementById('city').value.trim();
+    if (!city) { showError('city', 'Please enter the city.'); ok = false; } else clearError('city');
+
+    const units = document.getElementById('units').value;
+    if (!units) { showError('units', 'Please select a unit range.'); ok = false; } else clearError('units');
+
+    const day = document.getElementById('day').value;
+    if (!day) { showError('day', 'Please select a preferred day.'); ok = false; } else clearError('day');
+
+    const window = document.getElementById('window').value;
+    if (!window) { showError('window', 'Please select a time window.'); ok = false; } else clearError('window');
+
+    return ok;
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!validate()) return;
+
     btn.textContent = 'Sending...';
     btn.classList.add('loading');
 
