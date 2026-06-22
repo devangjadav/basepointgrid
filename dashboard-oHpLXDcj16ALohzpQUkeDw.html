@@ -275,6 +275,39 @@
 
     .refresh-btn:hover { background: #2a2a45; }
 
+    .card-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .card-link {
+      flex: 1;
+      text-align: center;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-decoration: none;
+      display: block;
+      transition: opacity 0.15s;
+    }
+
+    .card-link:hover { opacity: 0.82; }
+
+    .card-link.survey {
+      background: #e8faf4;
+      color: #1a7a5e;
+      border: 1px solid #c5ead8;
+    }
+
+    .card-link.loi {
+      background: #1a1a2e;
+      color: #2dd4a0;
+    }
+
     .controls {
       display: flex;
       align-items: center;
@@ -388,6 +421,10 @@
             <span class="metric-value">${p.planning_to_buy || 0}</span>
           </div>
           <div class="response-count">${p.total_responses || 0} response${p.total_responses === 1 ? '' : 's'}</div>
+          <div class="card-links" onclick="event.stopPropagation()">
+            <a class="card-link survey" href="/survey.html?p=${p.slug}" target="_blank">📋 Survey</a>
+            <a class="card-link loi" href="/loi.html?p=${p.slug}" target="_blank">✍️ LOI</a>
+          </div>
         </div>
       `;
     }).join('');
