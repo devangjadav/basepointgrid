@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letter of Intent — BasepointGrid</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    header {
+      background: #1a1a2e;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    header .logo-mark {
+      width: 28px;
+      height: 28px;
+      background: #2dd4a0;
+      border-radius: 6px;
+    }
+
+    header span {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── WRAPPER ── */
+    .wrap {
+      max-width: 780px;
+      margin: 36px auto 60px;
+      padding: 0 20px;
+    }
+
+    /* ── LOADING / ERROR / NOT FOUND ── */
+    .state-msg {
+      text-align: center;
+      padding: 60px 20px;
+      font-size: 15px;
+      color: #555;
+      display: none;
+    }
+
+    /* ── DOC CARD ── */
+    .doc {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: none;
+    }
+
+    /* ── DOC HEADER ── */
+    .doc-header {
+      background: #0F1F2E;
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .doc-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.3px;
+    }
+
+    .doc-logo span { color: #2ABFAB; }
+
+    .doc-tagline {
+      font-size: 12px;
+      color: #a0aab4;
+      margin-top: 3px;
+    }
+
+    .doc-contact {
+      text-align: right;
+      font-size: 12px;
+      color: #a0aab4;
+      line-height: 1.7;
+    }
+
+    /* ── DOC BODY ── */
+    .doc-body {
+      padding: 32px 36px 40px;
+    }
+
+    /* ── TITLE ── */
+    .doc-title {
+      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 22px;
+      border-bottom: 2px solid #0F1F2E;
+    }
+
+    .doc-title h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0F1F2E;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 5px;
+    }
+
+    .doc-title .sub {
+      font-size: 12px;
+      color: #2ABFAB;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── INFO BLOCK ── */
+    .info-block {
+      background: #F7F8FA;
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 32px;
+    }
+
+    .info-row { display: flex; flex-direction: column; gap: 3px; }
+
+    .info-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #2ABFAB;
+    }
+
+    .info-value {
+      font-size: 13.5px;
+      color: #1a1a1a;
+      font-weight: 500;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      font-size: 13.5px;
+      color: #444;
+      line-height: 1.75;
+      margin-bottom: 26px;
+      padding: 14px 18px;
+      border-left: 4px solid #2ABFAB;
+      background: #F7F8FA;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* ── SECTIONS ── */
+    .section { margin-bottom: 24px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .section-num {
+      background: #0F1F2E;
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .section-num.binding { background: #2ABFAB; color: #0F1F2E; }
+
+    .section h2 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0F1F2E;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .section p {
+      font-size: 13.5px;
+      color: #333;
+      line-height: 1.75;
+      padding-left: 38px;
+    }
+
+    .binding-badge {
+      display: inline-block;
+      background: #0F1F2E;
+      color: #2ABFAB;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 6px;
+      margin-left: 38px;
+      margin-top: 10px;
+      letter-spacing: 0.03em;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    /* ── SIGNATURES ── */
+    .sig-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #0F1F2E;
+      text-align: center;
+      padding-top: 28px;
+      margin-top: 28px;
+      margin-bottom: 24px;
+      border-top: 2px solid #0F1F2E;
+    }
+
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .sig-party {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #2ABFAB;
+      margin-bottom: 18px;
+    }
+
+    .sig-field { margin-bottom: 20px; }
+
+    .sig-line {
+      border-bottom: 1px solid #333;
+      height: 34px;
+      margin-bottom: 5px;
+    }
+
+    .sig-field-label {
+      font-size: 10.5px;
+      color: #999;
+    }
+
+    .sig-prefilled {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0F1F2E;
+      padding-top: 6px;
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 5px;
+    }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      border-top: 1px solid #e8eaed;
+      padding-top: 14px;
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-logo { font-size: 13px; font-weight: 700; color: #0F1F2E; }
+    .footer-logo span { color: #2ABFAB; }
+    .footer-copy { font-size: 11px; color: #999; }
+
+    /* ── PRINT BUTTON ── */
+    .print-bar {
+      text-align: center;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .print-btn {
+      background: #2ABFAB;
+      color: #0F1F2E;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .print-btn:hover { background: #23a896; }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      body { background: white; }
+      header { display: none; }
+      .print-bar { display: none !important; }
+      .wrap { margin: 0; padding: 0; max-width: 100%; }
+      .doc {
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .doc-body { padding: 24px 28px 32px; }
+    }
+
+    @media (max-width: 600px) {
+      .info-block { grid-template-columns: 1fr; }
+      .sig-grid { grid-template-columns: 1fr; }
+      .doc-header { flex-direction: column; }
+      .doc-contact { text-align: left; }
+      .doc-body { padding: 22px 18px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark"></div>
+  <span>BasepointGrid</span>
+</header>
+
+<!-- Loading -->
+<div class="state-msg" id="stateLoading" style="display:block;">Loading…</div>
+
+<!-- Not found -->
+<div class="state-msg" id="stateNotFound">
+  This link doesn't look right. Contact Devang at 925-452-7558.
+</div>
+
+<!-- Error -->
+<div class="state-msg" id="stateError">
+  Something went wrong loading this document. Try refreshing or contact Devang at 925-452-7558.
+</div>
+
+<div class="wrap">
+
+  <!-- Print button (hidden on print) -->
+  <div class="print-bar" id="printBar">
+    <button class="print-btn" onclick="window.print()">⬇ Print / Save as PDF</button>
+  </div>
+
+  <!-- LOI Document -->
+  <div class="doc" id="loiDoc">
+
+    <div class="doc-header">
+      <div>
+        <div class="doc-logo">Basepoint<span>Grid</span></div>
+        <div class="doc-tagline">East Bay · Multifamily EV Infrastructure</div>
+      </div>
+      <div class="doc-contact">
+        Devang Jadav, Principal<br>
+        925-452-7558 · devang@basepointgrid.com<br>
+        basepointgrid.com
+      </div>
+    </div>
+
+    <div class="doc-body">
+
+      <!-- Title -->
+      <div class="doc-title">
+        <h1>Letter of Intent — EV Charging Pilot</h1>
+        <div class="sub">Preliminary Terms Only · Only Section 3 Is Binding</div>
+      </div>
+
+      <!-- Property Info -->
+      <div class="info-block">
+        <div class="info-row">
+          <span class="info-label">Date</span>
+          <span class="info-value" id="loiDate">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Provider</span>
+          <span class="info-value">Plumeria Lux LLC, Operating as BasepointGrid</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Property</span>
+          <span class="info-value" id="loiProperty">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Property Manager</span>
+          <span class="info-value" id="loiManager">—</span>
+        </div>
+      </div>
+
+      <!-- Intro -->
+      <div class="intro">
+        This letter covers the basic terms for an EV charging pilot at <strong id="loiPropertyShort">this property</strong>. It is not the full contract — that comes later as a Site-Host Agreement. <strong>Only Section 3 below is binding once signed.</strong>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num">1</div>
+          <h2>The Pilot</h2>
+        </div>
+        <p>We install one dual-port Level 2 charger, two parking spots, at $0 cost to you. We handle billing and resident support. You get 10% of what the charger earns, growing up to 15% as the property's charging capacity grows — more stalls, panel upgrades, that kind of thing. We'll spell out the exact growth steps in the full agreement.</p>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num">2</div>
+          <h2>Getting It Built</h2>
+        </div>
+        <p>Once you sign this, and your resident survey shows enough interest, we start the engineering work and apply through PG&amp;E's Rule 29 program to help cover install costs. Once we have the engineering plan, you'll line up your own electrician for the conduit run.</p>
+      </div>
+
+      <!-- Section 3 — binding -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num binding">3</div>
+          <h2>If the Deal Falls Through</h2>
+        </div>
+        <p>If we've already paid for engineering and PG&amp;E approval, and Property cancels or switches to another vendor within 12 months, Property owes us back what we spent — capped at $3,750 total (PG&amp;E's advance, up to $3,500, plus a $250 admin fee). If the project turns out technically unworkable, this letter just ends. Nobody owes anybody anything.</p>
+        <div class="binding-badge">★ This section is legally binding upon signature</div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num">4</div>
+          <h2>Not a Full Contract</h2>
+        </div>
+        <p>Outside Section 3, nothing here is binding. This is just us agreeing to move forward together.</p>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num">5</div>
+          <h2>Signing Authority</h2>
+        </div>
+        <p>By signing, you're confirming you have the authority to do this for the property.</p>
+      </div>
+
+      <!-- Signatures -->
+      <div class="sig-title">Accepted and Agreed</div>
+
+      <div class="sig-grid">
+
+        <div>
+          <div class="sig-party">For Property Management</div>
+          <div class="sig-field">
+            <div class="sig-line"></div>
+            <div class="sig-field-label">Signature</div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-line"></div>
+            <div class="sig-field-label">Name / Title</div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-line"></div>
+            <div class="sig-field-label">Date</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sig-party">For BasepointGrid</div>
+          <div class="sig-field">
+            <div class="sig-line"></div>
+            <div class="sig-field-label">Signature</div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-prefilled">Devang Jadav, Principal</div>
+            <div class="sig-field-label">Name / Title</div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-line"></div>
+            <div class="sig-field-label">Date</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="doc-footer">
+        <div class="footer-logo">Basepoint<span>Grid</span> · A Plumeria Lux LLC company</div>
+        <div class="footer-copy" id="loiFooterDate">© 2026 · East Bay, California</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://svfdyvsabcdgqtwpwioc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2ZmR5dnNhYmNkZ3F0d3B3aW9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjQ5ODAsImV4cCI6MjA5Njk0MDk4MH0.lkyCAXiJBATdcgdLe4xmDUd1m305MZQBtcBzrjq59nM';
+
+  const params = new URLSearchParams(window.location.search);
+  const propertySlug = params.get('p');
+
+  function formatDate(d) {
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  async function init() {
+    // Set today's date immediately — no DB needed
+    const today = new Date();
+    document.getElementById('loiDate').textContent = formatDate(today);
+    document.getElementById('loiFooterDate').textContent = `© ${today.getFullYear()} · East Bay, California`;
+
+    if (!propertySlug) {
+      document.getElementById('stateLoading').style.display = 'none';
+      document.getElementById('stateNotFound').style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/properties?slug=eq.${propertySlug}&active=eq.true&select=slug,display_name,address,city,manager_name,manager_company`,
+        { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+      );
+      const data = await res.json();
+
+      if (!data.length) {
+        document.getElementById('stateLoading').style.display = 'none';
+        document.getElementById('stateNotFound').style.display = 'block';
+        return;
+      }
+
+      const p = data[0];
+
+      // Property address line
+      const propertyLine = `${p.display_name}, ${p.address}, ${p.city}, CA`;
+      document.getElementById('loiProperty').textContent = propertyLine;
+      document.getElementById('loiPropertyShort').textContent = p.display_name;
+
+      // Manager line — name if exists, else "Attn: Property Manager"
+      // Company if exists, append after name
+      let managerLine = '';
+      if (p.manager_company) {
+        managerLine = p.manager_company;
+        if (p.manager_name) {
+          managerLine += ` — Attn: ${p.manager_name}`;
+        } else {
+          managerLine += ` — Attn: Property Manager`;
+        }
+      } else {
+        managerLine = p.manager_name ? `Attn: ${p.manager_name}` : 'Attn: Property Manager';
+      }
+      document.getElementById('loiManager').textContent = managerLine;
+
+      // Page title
+      document.title = `LOI — ${p.display_name} · BasepointGrid`;
+
+      // Show doc
+      document.getElementById('stateLoading').style.display = 'none';
+      document.getElementById('loiDoc').style.display = 'block';
+      document.getElementById('printBar').style.display = 'block';
+
+    } catch (e) {
+      document.getElementById('stateLoading').style.display = 'none';
+      document.getElementById('stateError').style.display = 'block';
+    }
+  }
+
+  init();
+</script>
+
+</body>
+</html>
