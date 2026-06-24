@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Holder — BasepointGrid</title>
+  <style>
+    @page {
+      size: 4in 6in;
+      margin: 0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fff;
+      color: #0F1F2E;
+      width: 4in;
+      min-height: 6in;
+    }
+
+    /* ── SCREEN WRAPPER ─────────────────────────────────── */
+    .screen-wrap {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      .screen-wrap {
+        max-width: 100%;
+        margin: 0;
+        padding: 0.18in 0.22in 0.14in;
+        min-height: 6in;
+        width: 4in;
+      }
+    }
+
+    /* ── PROPERTY BADGE ─────────────────────────────────── */
+    .property-badge {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .property-badge span {
+      display: inline-block;
+      border: 1.5px solid #0F1F2E;
+      border-radius: 20px;
+      padding: 4px 16px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0F1F2E;
+    }
+
+    /* ── HEADLINE ───────────────────────────────────────── */
+    .headline {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .headline h1 {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #0F1F2E;
+    }
+
+    .headline h1 .teal {
+      color: #2ABFAB;
+    }
+
+    /* ── BODY COPY ──────────────────────────────────────── */
+    .body-copy {
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #0F1F2E;
+      margin-bottom: 18px;
+      padding: 0 8px;
+    }
+
+    /* ── BULLETS ────────────────────────────────────────── */
+    .bullets {
+      list-style: none;
+      margin: 0 auto 20px;
+      padding: 0;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .bullets-wrap {
+      text-align: center;
+    }
+
+    .bullets li {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #0F1F2E;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .bullets li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 7px;
+      height: 7px;
+      background: #2ABFAB;
+      border-radius: 50%;
+    }
+
+    /* ── QR CODE ────────────────────────────────────────── */
+    .qr-wrap {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .qr-box {
+      display: inline-block;
+      border: 2px solid #0F1F2E;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    #qrcode canvas,
+    #qrcode img {
+      display: block;
+    }
+
+    .qr-label {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #0F1F2E;
+    }
+
+    .qr-label .teal {
+      color: #2ABFAB;
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 10px;
+      margin-top: 4px;
+    }
+
+    .wordmark {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0F1F2E;
+    }
+
+    .wordmark span {
+      color: #2ABFAB;
+    }
+
+    .contact {
+      font-size: 10px;
+      color: #666;
+    }
+
+    /* ── LOADING / ERROR ────────────────────────────────── */
+    .state {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    /* ── PRINT BUTTON ───────────────────────────────────── */
+    .print-bar {
+      text-align: center;
+      padding: 16px;
+      background: #f5f5f3;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .print-btn {
+      background: #0F1F2E;
+      color: #2ABFAB;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+
+    .print-btn:hover { background: #1a3148; }
+  </style>
+</head>
+<body>
+
+<!-- Screen-only print button -->
+<div class="print-bar no-print">
+  <button class="print-btn" onclick="window.print()">🖨️ Print Sign Holder</button>
+</div>
+
+<!-- Loading state -->
+<div id="loading-state" class="state">Loading property…</div>
+
+<!-- Sign holder content -->
+<div id="doc-content" style="display:none">
+  <div class="screen-wrap">
+
+    <div>
+      <!-- Property badge -->
+      <div class="property-badge">
+        <span id="propertyName">—</span>
+      </div>
+
+      <!-- Headline -->
+      <div class="headline">
+        <h1>Wish you could<br>wake up with a<br><span class="teal">100% full charge?</span></h1>
+      </div>
+
+      <!-- Body copy -->
+      <p class="body-copy">
+        We're checking if enough residents here drive (or want to drive)
+        electric to bring premium charging stations to this property.
+      </p>
+
+      <!-- Bullets -->
+      <div class="bullets-wrap">
+        <ul class="bullets">
+          <li>Takes 60 seconds, from your phone</li>
+          <li>4 quick questions, no spam</li>
+          <li>Your answer helps decide if this happens here</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- QR code -->
+    <div class="qr-wrap">
+      <div class="qr-box">
+        <div id="qrcode"></div>
+      </div>
+      <p class="qr-label">Scan to share <span class="teal">your answer</span></p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="wordmark"><span>Basepoint</span>Grid</div>
+      <div class="contact">Questions? Text Devang — 925-452-7558</div>
+    </footer>
+
+  </div>
+</div>
+
+<!-- QR code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(async () => {
+  const SUPABASE_URL = 'https://svfdyvsabcdgqtwpwioc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2ZmR5dnNhYmNkZ3F0d3B3aW9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjQ5ODAsImV4cCI6MjA5Njk0MDk4MH0.lkyCAXiJBATdcgdLe4xmDUd1m305MZQBtcBzrjq59nM';
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('p');
+
+  // Build survey URL
+  const surveyUrl = slug
+    ? `https://basepointgrid.com/survey.html?p=${encodeURIComponent(slug)}`
+    : 'https://basepointgrid.com/survey.html';
+
+  // Resolve property display name
+  let displayName = '';
+
+  if (slug) {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/properties?slug=eq.${encodeURIComponent(slug)}&select=display_name`,
+        {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        }
+      );
+      const data = await res.json();
+      if (data && data[0] && data[0].display_name) {
+        displayName = data[0].display_name.toUpperCase();
+      }
+    } catch (e) {
+      // fall through to slug fallback
+    }
+  }
+
+  // Fallback: prettify slug if Supabase returned nothing
+  if (!displayName && slug) {
+    displayName = slug.replace(/-/g, ' ').toUpperCase();
+  }
+
+  if (!displayName) {
+    displayName = 'THIS PROPERTY';
+  }
+
+  document.getElementById('propertyName').textContent = displayName;
+  document.title = `Sign Holder — ${displayName} — BasepointGrid`;
+
+  // Generate QR code
+  // NOTE: qrcodejs renders blank in Playwright/server-side.
+  // This file is browser-print only (same as LOI), so qrcodejs works fine here.
+  new QRCode(document.getElementById('qrcode'), {
+    text: surveyUrl,
+    width: 160,
+    height: 160,
+    colorDark: '#0F1F2E',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('doc-content').style.display = 'block';
+})();
+</script>
+
+</body>
+</html>

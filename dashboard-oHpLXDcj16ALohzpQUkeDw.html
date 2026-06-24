@@ -308,6 +308,12 @@
       color: #2dd4a0;
     }
 
+    .card-link.sign {
+      background: #f0f0f0;
+      color: #444;
+      border: 1px solid #ddd;
+    }
+
     .controls {
       display: flex;
       align-items: center;
@@ -424,6 +430,7 @@
           <div class="card-links" onclick="event.stopPropagation()">
             <a class="card-link survey" href="/survey.html?p=${p.slug}" target="_blank">📋 Survey</a>
             <a class="card-link loi" href="/loi.html?p=${p.slug}" target="_blank">✍️ LOI</a>
+            <a class="card-link sign" href="/signholder.html?p=${p.slug}" target="_blank">🖨️ Sign</a>
           </div>
         </div>
       `;
